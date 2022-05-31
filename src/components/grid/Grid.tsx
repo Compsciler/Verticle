@@ -1,6 +1,10 @@
+import { randomBytes } from 'crypto'
 import { MAX_CHALLENGES } from '../../constants/settings'
+import { CompletedCol } from './CompletedCol'
 import { CompletedRow } from './CompletedRow'
+import { CurrentCol } from './CurrentCol'
 import { CurrentRow } from './CurrentRow'
+import { EmptyCol } from './EmptyCol'
 import { EmptyRow } from './EmptyRow'
 
 type Props = {
@@ -23,22 +27,56 @@ export const Grid = ({
       ? Array.from(Array(MAX_CHALLENGES - 1 - guesses.length))
       : []
 
+  const styles = {
+    display: 'flex',
+    flexFlow: 'row wrap',
+    alignItems: 'stretch',
+    height: '400px',
+    width: `${solution.length * 60}px`,
+  }
+  const lineBreakStyle = {
+    width: '100%'
+  }
   return (
-    <>
-      {guesses.map((guess, i) => (
-        <CompletedRow
+    <div style={styles}>
+      {guesses.slice(0, solution.length).map((guess, i) => (
+        <CompletedCol
           key={i}
           solution={solution}
           guess={guess}
           isRevealing={isRevealing && guesses.length - 1 === i}
         />
       ))}
-      {guesses.length < MAX_CHALLENGES && (
-        <CurrentRow guess={currentGuess} solution={solution} className={currentRowClassName} />
-      )}
-      {empties.map((_, i) => (
-        <EmptyRow solution={solution} key={i} />
+      {guesses.slice(solution.length, MAX_CHALLENGES).map((guess, i) => (
+        <>
+          <div style={lineBreakStyle}></div>
+          {/* {i == 0 && <div style={lineBreakStyle}></div>} */}
+          <CompletedRow
+            key={solution.length + i}
+            solution={solution}
+            guess={guess}
+            isRevealing={isRevealing && guesses.length - 1 === i}
+          />
+        </>
       ))}
-    </>
+      {guesses.length < MAX_CHALLENGES && guesses.length < solution.length && (
+        <CurrentCol guess={currentGuess} solution={solution} className={currentRowClassName} />
+      )}
+      {guesses.length < MAX_CHALLENGES && guesses.length >= solution.length && (
+        <>
+          <div style={lineBreakStyle}></div>
+          <CurrentRow guess={currentGuess} solution={solution} className={currentRowClassName} />
+        </>
+      )}
+      {empties.slice(0, solution.length - MAX_CHALLENGES).map((_, i) => (
+        <EmptyCol solution={solution} key={i} />
+      ))}
+      {empties.slice(solution.length - MAX_CHALLENGES, empties.length).map((_, i) => (
+        <>
+          <div style={lineBreakStyle}></div>
+          <EmptyRow solution={solution} key={solution.length + i} />
+        </>
+      ))}
+    </div>
   )
 }
