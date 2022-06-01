@@ -8,17 +8,19 @@ type Props = {
   solution: string
   className: string
   isStartOfRevealing: boolean,
-  setIsStartOfRevealing: Dispatch<SetStateAction<boolean>>
+  setIsStartOfRevealing?: Dispatch<SetStateAction<boolean>>
   col: number
-  charStatuses: {[key: string]: CharStatus}
-  setCharStatuses: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
+  charStatuses?: {[key: string]: CharStatus}
+  setCharStatuses?: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
 }
 
 export const CurrentCol = ({ guess, solution, className, isStartOfRevealing, setIsStartOfRevealing, col, charStatuses, setCharStatuses }: Props) => {
   const statuses = getColGuessStatuses(solution, guess, col)
-  if (isStartOfRevealing) {
+  if (isStartOfRevealing && setIsStartOfRevealing) {
     setIsStartOfRevealing(false)
-    setStatuses(guess, statuses, charStatuses, setCharStatuses)
+    if (charStatuses && setCharStatuses) {
+      setStatuses(guess, statuses, charStatuses, setCharStatuses)
+    }
   }
   const splitGuess = unicodeSplit(guess)
   const emptyCells = Array.from(Array(solution.length - splitGuess.length))
@@ -27,10 +29,16 @@ export const CurrentCol = ({ guess, solution, className, isStartOfRevealing, set
   return (
     <div className={classes}>
       {splitGuess.map((letter, i) => (
-        <Cell key={i} value={letter} />
+        <>
+          <Cell key={i} value={letter} />
+          <div className="mb-1"></div>
+        </>
       ))}
       {emptyCells.map((_, i) => (
-        <Cell key={i} />
+        <>
+          <Cell key={i} />
+          <div className="mb-1"></div>
+        </>
       ))}
     </div>
   )

@@ -16,14 +16,17 @@ export const CompletedCol = ({ solution, guess, isRevealing, col }: Props) => {
   return (
     <div className="">
       {splitGuess.map((letter, i) => (
-        <Cell
-          key={i}
-          value={letter}
-          status={statuses[i]}
-          position={i}
-          isRevealing={isRevealing}
-          isCompleted
-        />
+        <>
+          <Cell
+            key={i}
+            value={letter}
+            status={statuses[i]}
+            position={i}
+            isRevealing={isRevealing}
+            isCompleted
+          />
+          <div className="mb-1"></div>
+        </>
       ))}
     </div>
   )

@@ -8,16 +8,18 @@ type Props = {
   solution: string
   className: string
   isStartOfRevealing: boolean,
-  setIsStartOfRevealing: Dispatch<SetStateAction<boolean>>
-  charStatuses: {[key: string]: CharStatus}
-  setCharStatuses: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
+  setIsStartOfRevealing?: Dispatch<SetStateAction<boolean>>
+  charStatuses?: {[key: string]: CharStatus}
+  setCharStatuses?: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
 }
 
 export const CurrentRow = ({ guess, solution, className, isStartOfRevealing, setIsStartOfRevealing, charStatuses, setCharStatuses }: Props) => {
   const statuses = getRowGuessStatuses(solution, guess)
-  if (isStartOfRevealing) {
+  if (isStartOfRevealing && setIsStartOfRevealing) {
     setIsStartOfRevealing(false)
-    setStatuses(guess, statuses, charStatuses, setCharStatuses)
+    if (charStatuses && setCharStatuses) {
+      setStatuses(guess, statuses, charStatuses, setCharStatuses)
+    }
   }
   const splitGuess = unicodeSplit(guess)
   const emptyCells = Array.from(Array(solution.length - splitGuess.length))

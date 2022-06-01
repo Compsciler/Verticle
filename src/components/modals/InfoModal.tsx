@@ -1,4 +1,4 @@
-import { Cell } from '../grid/Cell'
+import { Grid } from '../grid/Grid'
 import { BaseModal } from './BaseModal'
 
 type Props = {
@@ -8,60 +8,60 @@ type Props = {
 
 export const InfoModal = ({ isOpen, handleClose }: Props) => {
   return (
-    <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose}>
+    <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose} isWide={true}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        Guess the word in 6 tries. After each guess, the color of the tiles will
-        change to show how close your guess was to the word.
+        Vertically guess the word in 6 tries. After each guess, the color of the tiles will
+        change to show how close your guess was to 
+        the letter <strong>in that column position</strong> for the word.
+      </p>
+      <p className="text-sm text-gray-500 dark:text-gray-300">
+        Imagine the solution word being placed in the bottom row and 
+        the color of the letters in the grid apply to the word below.
+        (If you reach the 6th guess, it will be spelled horizontally and will be colored normally.)
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        <Cell
-          isRevealing={true}
-          isCompleted={true}
-          value="W"
-          status="correct"
+        {/* <CompletedCol solution="" guess="WEARY" col={1} /> */}
+        <Grid
+          solution="AMPLY"
+          guesses={["WEARY", "PILLS", "VAGUE", "AMPLY"]}
+          currentGuess=""
+          isRevealing={false}
+          isStartOfRevealing={false}
+          currentRowClassName=""
         />
-        <Cell value="E" />
-        <Cell value="A" />
-        <Cell value="R" />
-        <Cell value="Y" />
       </div>
-      <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter W is in the word and in the correct spot.
-      </p>
 
-      <div className="flex justify-center mb-1 mt-4">
-        <Cell value="P" />
-        <Cell value="I" />
-        <Cell
-          isRevealing={true}
-          isCompleted={true}
-          value="L"
-          status="present"
-        />
-        <Cell value="O" />
-        <Cell value="T" />
-      </div>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter L is in the word but in the wrong spot.
-      </p>
-
-      <div className="flex justify-center mb-1 mt-4">
-        <Cell value="V" />
-        <Cell value="A" />
-        <Cell value="G" />
-        <Cell isRevealing={true} isCompleted={true} value="U" status="absent" />
-        <Cell value="E" />
-      </div>
-      <p className="text-sm text-gray-500 dark:text-gray-300">
-        The letter U is not in the word in any spot.
+        Information gained from guesses:
+        <br /><br />
+        <ol>
+          <li>
+            <b>1.</b> The letter A is in the word and in the 1st position. {<br />}
+            The letter Y is in the word but not in the 1st position.
+          </li>
+          <li>
+            <b>2.</b> The letter P is in the word but not in the 2nd position. {<br />}
+            There letter L appears exactly once in the word but not in the 2nd position.
+          </li>
+          <li>
+            <b>3.</b> The letter A is in the word but not in the 3rd position. {<br />}
+            (This A would be green if and only if another A was in the 3rd position.)
+          </li>
+          <li>
+            <b>4.</b> The guess was correct and the word was AMPLY! {<br />}
+            (Make sure you understand why APPLY cannot be the solution.)
+          </li>
+          <br />
+          All gray letters are not in the word in any position.
+        </ol>
       </p>
 
       <p className="mt-6 italic text-sm text-gray-500 dark:text-gray-300">
         This is an open source version of the word guessing game we all know and
         love -{' '}
         <a
-          href="https://github.com/Compsciler/Wordle-With-Score-Database/"
+          href="https://github.com/Compsciler/Verticle/"
           className="underline font-bold"
         >
           check out the code here

@@ -313,10 +313,15 @@ function App() {
         if (!isPlayingExample) {
           setStats(addStatsForCompletedGame(stats, guesses.length))
         }
+        const guessCols = Array.from(
+          Array(guessesIncludingCurrent.length),
+          (_, i) => i
+        )
         sendScore(
           solutionIndex,
           solution,
           guessesIncludingCurrent,
+          guessCols,
           false,
           isHardMode
         )
@@ -327,10 +332,12 @@ function App() {
         if (!isPlayingExample) {
           setStats(addStatsForCompletedGame(stats, guesses.length + 1))
         }
+        const guessCols = Array.from(Array(solution.length), (_, i) => i)
         sendScore(
           solutionIndex,
           solution,
           guessesIncludingCurrent,
+          guessCols,
           true,
           isHardMode
         )
@@ -347,6 +354,7 @@ function App() {
     solutionIndex: number,
     solution: string,
     guesses: string[],
+    guessCols: number[],
     lost: boolean,
     isHardMode: boolean
   ) => {
@@ -356,6 +364,7 @@ function App() {
       solutionIndex,
       solution,
       guesses,
+      guessCols,
       lost,
       isHardMode,
       emojiGrid,

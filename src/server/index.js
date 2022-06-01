@@ -14,6 +14,7 @@ const scoreSchema = new mongoose.Schema({
     solutionIndex: Number,
     solution: String,
     guesses: [String],
+    guessCols: [Number],
     lost: Boolean,
     isHardMode: Boolean,
     emojiGrid: String

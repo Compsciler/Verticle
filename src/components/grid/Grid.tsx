@@ -1,4 +1,3 @@
-import { randomBytes } from 'crypto'
 import { Dispatch, SetStateAction } from 'react'
 import { MAX_CHALLENGES } from '../../constants/settings'
 import { CharStatus } from '../../lib/statuses'
@@ -15,10 +14,10 @@ type Props = {
   currentGuess: string
   isRevealing?: boolean
   isStartOfRevealing: boolean
-  setIsStartOfRevealing: Dispatch<SetStateAction<boolean>>
+  setIsStartOfRevealing?: Dispatch<SetStateAction<boolean>>
   currentRowClassName: string
-  charStatuses: {[key: string]: CharStatus}
-  setCharStatuses: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
+  charStatuses?: {[key: string]: CharStatus}
+  setCharStatuses?: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
 }
 
 export const Grid = ({
@@ -37,6 +36,7 @@ export const Grid = ({
       ? Array.from(Array(MAX_CHALLENGES - 1 - guesses.length))
       : []
 
+  // Source: https://stackoverflow.com/questions/29732575/how-to-specify-line-breaks-in-a-multi-line-flexbox-layout
   const styles = {
     display: 'flex',
     flexFlow: 'row wrap',
