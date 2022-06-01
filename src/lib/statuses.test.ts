@@ -1,4 +1,4 @@
-import { getGuessStatuses } from './statuses'
+import { getRowGuessStatuses } from './statuses'
 
 const mockSolutionGetter = jest.fn()
 
@@ -13,21 +13,21 @@ beforeEach(() => {
 
 describe('getGuessStatuses', () => {
   test('guess statuses', () => {
-    expect(getGuessStatuses('ABCDE', 'EDCBA')).toEqual([
+    expect(getRowGuessStatuses('ABCDE', 'EDCBA')).toEqual([
       'present',
       'present',
       'correct',
       'present',
       'present',
     ])
-    expect(getGuessStatuses('ABCDE', 'VWXYZ')).toEqual([
+    expect(getRowGuessStatuses('ABCDE', 'VWXYZ')).toEqual([
       'absent',
       'absent',
       'absent',
       'absent',
       'absent',
     ])
-    expect(getGuessStatuses('ABCDE', 'ABCDE')).toEqual([
+    expect(getRowGuessStatuses('ABCDE', 'ABCDE')).toEqual([
       'correct',
       'correct',
       'correct',

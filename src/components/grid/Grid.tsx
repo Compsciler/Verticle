@@ -1,5 +1,7 @@
 import { randomBytes } from 'crypto'
+import { Dispatch, SetStateAction } from 'react'
 import { MAX_CHALLENGES } from '../../constants/settings'
+import { CharStatus } from '../../lib/statuses'
 import { CompletedCol } from './CompletedCol'
 import { CompletedRow } from './CompletedRow'
 import { CurrentCol } from './CurrentCol'
@@ -12,7 +14,11 @@ type Props = {
   guesses: string[]
   currentGuess: string
   isRevealing?: boolean
+  isStartOfRevealing: boolean
+  setIsStartOfRevealing: Dispatch<SetStateAction<boolean>>
   currentRowClassName: string
+  charStatuses: {[key: string]: CharStatus}
+  setCharStatuses: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
 }
 
 export const Grid = ({
@@ -20,7 +26,11 @@ export const Grid = ({
   guesses,
   currentGuess,
   isRevealing,
+  isStartOfRevealing,
+  setIsStartOfRevealing,
   currentRowClassName,
+  charStatuses,
+  setCharStatuses,
 }: Props) => {
   const empties =
     guesses.length < MAX_CHALLENGES - 1
@@ -45,6 +55,7 @@ export const Grid = ({
           solution={solution}
           guess={guess}
           isRevealing={isRevealing && guesses.length - 1 === i}
+          col={i}
         />
       ))}
       {guesses.slice(solution.length, MAX_CHALLENGES).map((guess, i) => (
@@ -55,19 +66,38 @@ export const Grid = ({
             key={solution.length + i}
             solution={solution}
             guess={guess}
-            isRevealing={isRevealing && guesses.length - 1 === i}
+            isRevealing={isRevealing && guesses.length - 1 === solution.length + i}
           />
         </>
       ))}
       {guesses.length < MAX_CHALLENGES && guesses.length < solution.length && (
-        <CurrentCol guess={currentGuess} solution={solution} className={currentRowClassName} />
+        <CurrentCol
+          guess={currentGuess}
+          solution={solution}
+          className={currentRowClassName} 
+          isStartOfRevealing={isStartOfRevealing}
+          setIsStartOfRevealing={setIsStartOfRevealing}
+          col={guesses.length}
+          charStatuses={charStatuses}
+          setCharStatuses={setCharStatuses}
+        />
       )}
       {guesses.length < MAX_CHALLENGES && guesses.length >= solution.length && (
         <>
           <div style={lineBreakStyle}></div>
-          <CurrentRow guess={currentGuess} solution={solution} className={currentRowClassName} />
+          <CurrentRow
+            guess={currentGuess}
+            solution={solution}
+            className={currentRowClassName}
+            isStartOfRevealing={isStartOfRevealing}
+            setIsStartOfRevealing={setIsStartOfRevealing}
+            charStatuses={charStatuses}
+            setCharStatuses={setCharStatuses}
+          />
         </>
       )}
+      
+      {/* Assumes that solution.length < MAX_CHALLENGES */}
       {empties.slice(0, solution.length - MAX_CHALLENGES).map((_, i) => (
         <EmptyCol solution={solution} key={i} />
       ))}

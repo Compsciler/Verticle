@@ -51,6 +51,7 @@ import { generateEmojiGrid, getEmojiTiles } from './lib/share'
 import { useMatch } from 'react-router-dom'
 import { getWordBySolutionIndex } from './lib/words'
 import { exampleIds } from './constants/exampleIds'
+import { CharStatus } from './lib/statuses'
 
 function App() {
   const isPlayingDaily = useMatch('/') !== null
@@ -104,6 +105,11 @@ function App() {
     getStoredIsHighContrastMode()
   )
   const [isRevealing, setIsRevealing] = useState(false)
+  const [isStartOfRevealing, setIsStartOfRevealing] = useState(false)
+
+  const [charStatuses, setCharStatuses] = useState<{
+    [key: string]: CharStatus
+  }>({})
 
   const [guessesOfDay, setGuessesOfDay] = useState<string[]>(() => {
     const loaded = loadGameOfDayStateFromLocalStorage()
@@ -200,13 +206,13 @@ function App() {
   }
 
   useEffect(() => {
-    saveGameStateToLocalStorage({ guesses, solution })
+    saveGameStateToLocalStorage({ guesses, solution, charStatuses })
   }, [guesses])
   useEffect(() => {
     if (!isPlayingDaily) {
       return
     }
-    saveGameOfDayStateToLocalStorage({ guesses, solution })
+    saveGameOfDayStateToLocalStorage({ guesses, solution, charStatuses })
   }, [guessesOfDay])
 
   useEffect(() => {
@@ -279,6 +285,7 @@ function App() {
     }
 
     setIsRevealing(true)
+    setIsStartOfRevealing(true)
     // turn this back off after all
     // chars have been revealed
     setTimeout(() => {
@@ -381,7 +388,11 @@ function App() {
             guesses={guesses}
             currentGuess={currentGuess}
             isRevealing={isRevealing}
+            isStartOfRevealing={isStartOfRevealing}
+            setIsStartOfRevealing={setIsStartOfRevealing}
             currentRowClassName={currentRowClass}
+            charStatuses={charStatuses}
+            setCharStatuses={setCharStatuses}
           />
         </div>
         <Keyboard
@@ -391,6 +402,7 @@ function App() {
           solution={solution}
           guesses={guesses}
           isRevealing={isRevealing}
+          charStatuses={charStatuses}
         />
         <InfoModal
           isOpen={isInfoModalOpen}

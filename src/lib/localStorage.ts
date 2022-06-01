@@ -1,3 +1,5 @@
+import { CharStatus } from "./statuses"
+
 const gameStateKey = 'gameState'
 const gameOfDayStateKey = 'gameOfDayState'
 const highContrastKey = 'highContrast'
@@ -5,6 +7,7 @@ const highContrastKey = 'highContrast'
 type StoredGameState = {
   guesses: string[]
   solution: string
+  charStatuses: {[key: string]: CharStatus}
 }
 
 export const saveGameStateToLocalStorage = (gameState: StoredGameState) => {

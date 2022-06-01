@@ -1,28 +1,14 @@
 import { WORDS } from '../constants/wordlist'
 import { VALID_GUESSES } from '../constants/validGuesses'
 import { WRONG_SPOT_MESSAGE, NOT_CONTAINED_MESSAGE } from '../constants/strings'
-import { getGuessStatuses } from './statuses'
+import { getRowGuessStatuses } from './statuses'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
-// import { isValidKey } from '../components/keyboard/Keyboard'
 
 export const isWordInWordList = (word: string) => {
   return (
     VALID_GUESSES.includes(localeAwareLowerCase(word))
   )
 }
-
-/*
-export const isWordInWordList = (word: string) => {
-  return (
-    WORDS.includes(localeAwareLowerCase(word)) ||
-    isValidWord(word, solution)
-  )
-}
-
-export const isValidWord = (word: string, solution: string) => {
-  return word.length === solution.length && word.split('').every(isValidKey);
-}
-*/
 
 export const isWinningWord = (word: string, solution: string) => {
   return word === solution
@@ -42,7 +28,7 @@ export const findFirstUnusedReveal = (word: string, guesses: string[], solution:
 
   const lettersLeftArray = new Array<string>()
   const guess = guesses[guesses.length - 1]
-  const statuses = getGuessStatuses(solution, guess)
+  const statuses = getRowGuessStatuses(solution, guess)
   const splitWord = unicodeSplit(word)
   const splitGuess = unicodeSplit(guess)
 

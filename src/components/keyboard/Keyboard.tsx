@@ -1,9 +1,8 @@
-import { getStatuses } from '../../lib/statuses'
+import { CharStatus } from '../../lib/statuses'
 import { Key } from './Key'
 import { useEffect } from 'react'
 import { ENTER_TEXT, DELETE_TEXT } from '../../constants/strings'
 import { localeAwareUpperCase } from '../../lib/words'
-// import { VALID_CHARS } from '../../constants/validChars'
 
 type Props = {
   onChar: (value: string) => void
@@ -12,6 +11,7 @@ type Props = {
   solution: string
   guesses: string[]
   isRevealing?: boolean
+  charStatuses: {[key: string]: CharStatus}
 }
 
 export const Keyboard = ({
@@ -21,9 +21,8 @@ export const Keyboard = ({
   solution,
   guesses,
   isRevealing,
+  charStatuses,
 }: Props) => {
-  const charStatuses = getStatuses(solution, guesses)
-
   const onClick = (value: string) => {
     if (value === 'ENTER') {
       onEnter()
@@ -46,11 +45,6 @@ export const Keyboard = ({
         if (key.length === 1 && key >= 'A' && key <= 'Z') {
           onChar(key)
         }
-        /*
-        if (isValidKey(key)) {
-          onChar(key)
-        }
-        */
       }
     }
     window.addEventListener('keyup', listener)
@@ -107,11 +101,3 @@ export const Keyboard = ({
   )
 }
 
-/*
-export const isValidKey = (key: string) => {
-  if (key.length !== 1) {
-    return false
-  }
-  return VALID_CHARS.includes(key)
-}
-*/

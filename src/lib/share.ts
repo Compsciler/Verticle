@@ -1,4 +1,4 @@
-import { getGuessStatuses } from './statuses'
+import { CharStatus, getColGuessStatuses, getRowGuessStatuses } from './statuses'
 import { unicodeSplit } from './words'
 import { GAME_TITLE } from '../constants/strings'
 import { MAX_CHALLENGES } from '../constants/settings'
@@ -53,25 +53,49 @@ export const generateEmojiGrid = (
   guesses: string[],
   tiles: string[]
 ) => {
-  return guesses
+  const colEmojiGridArr = new Array(solution.length)
+  for (let i = 0; i < colEmojiGridArr.length; i++) {
+    colEmojiGridArr[i] = new Array(solution.length)
+  }
+  guesses.slice(0, solution.length).forEach((guess, c) => {
+    const status = getColGuessStatuses(solution, guess, c)
+    const splitGuess = unicodeSplit(guess)
+    splitGuess.forEach((char, r) => {
+      colEmojiGridArr[r][c] = getStatusEmoji(status[r], tiles)
+    })
+  })
+  const colEmojiGrid = colEmojiGridArr
+    .map(colEmojiGridRow => (
+      colEmojiGridRow.join('')
+    ))
+    .join('\n')
+
+  const rowEmojiGrid = guesses.slice(solution.length, guesses.length)
     .map((guess) => {
-      const status = getGuessStatuses(solution, guess)
+      const status = getRowGuessStatuses(solution, guess)
       const splitGuess = unicodeSplit(guess)
 
       return splitGuess
         .map((_, i) => {
-          switch (status[i]) {
-            case 'correct':
-              return tiles[0]
-            case 'present':
-              return tiles[1]
-            default:
-              return tiles[2]
-          }
+          return getStatusEmoji(status[i], tiles)
         })
         .join('')
     })
     .join('\n')
+
+    const emojiGrid = colEmojiGrid + '\n\n' + rowEmojiGrid
+    return emojiGrid
+}
+
+const getStatusEmoji = (status: CharStatus, tiles: string[]) => {
+  switch (status) {
+    case 'correct':
+      return tiles[0]
+    case 'present':
+      return tiles[1]
+    default:
+      return tiles[2]
+  }
 }
 
 const attemptShare = (shareData: object) => {
