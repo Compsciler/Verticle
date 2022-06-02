@@ -1,7 +1,7 @@
 import { WORDS } from '../constants/wordlist'
 import { VALID_GUESSES } from '../constants/validGuesses'
 import { WRONG_SPOT_MESSAGE, NOT_CONTAINED_MESSAGE } from '../constants/strings'
-import { getRowGuessStatuses } from './statuses'
+import { getColGuessStatuses } from './statuses'
 import { default as GraphemeSplitter } from 'grapheme-splitter'
 
 export const isWordInWordList = (word: string) => {
@@ -26,34 +26,49 @@ export const findFirstUnusedReveal = (word: string, guesses: string[], solution:
     return false
   }
 
-  const lettersLeftArray = new Array<string>()
-  const guess = guesses[guesses.length - 1]
-  const statuses = getRowGuessStatuses(solution, guess)
   const splitWord = unicodeSplit(word)
-  const splitGuess = unicodeSplit(guess)
 
-  for (let i = 0; i < splitGuess.length; i++) {
-    if (statuses[i] === 'correct' || statuses[i] === 'present') {
-      lettersLeftArray.push(splitGuess[i])
-    }
-    if (statuses[i] === 'correct' && splitWord[i] !== splitGuess[i]) {
-      return WRONG_SPOT_MESSAGE(splitGuess[i], i + 1)
-    }
-  }
+  // Assumes that solution.length >= MAX_CHALLENGES - 1
+  const colStatusesArr = guesses.slice(0, solution.length).map((guess, i) => (
+    getColGuessStatuses(solution, guess, i)
+  ))
 
-  // check for the first unused letter, taking duplicate letters
-  // into account - see issue #198
-  let n
-  for (const letter of splitWord) {
-    n = lettersLeftArray.indexOf(letter)
-    if (n !== -1) {
-      lettersLeftArray.splice(n, 1)
+  for (let c = 0; c < colStatusesArr.length; c++) {
+    const colStatuses = colStatusesArr[c]
+    for (let r = 0; r < colStatuses.length; r++) {
+      const status = colStatuses[r]
+      const colStatusChar = unicodeSplit(guesses[c])[r]
+      
+      if (status === 'correct' && splitWord[c] !== colStatusChar) {
+        return WRONG_SPOT_MESSAGE(colStatusChar, c + 1)
+      }
     }
   }
 
-  if (lettersLeftArray.length > 0) {
-    return NOT_CONTAINED_MESSAGE(lettersLeftArray[0])
+  for (let c = 0; c < colStatusesArr.length; c++) {
+    const colStatuses = colStatusesArr[c]
+    const lettersLeftArray = new Array<string>()
+    for (let r = 0; r < colStatuses.length; r++) {
+      const status = colStatuses[r]
+      const colStatusChar = unicodeSplit(guesses[c])[r]
+      if (status === 'correct' || status === 'present') {
+        lettersLeftArray.push(colStatusChar)
+      }
+    }
+    
+    let n
+    for (const letter of splitWord) {
+      n = lettersLeftArray.indexOf(letter)
+      if (n !== -1) {
+        lettersLeftArray.splice(n, 1)
+      }
+    }
+
+    if (lettersLeftArray.length > 0) {
+      return NOT_CONTAINED_MESSAGE(lettersLeftArray[0])
+    }
   }
+  
   return false
 }
 
