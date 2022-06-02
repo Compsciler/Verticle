@@ -56,8 +56,11 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
           All gray letters are not in the word in any position.
         </ol>
       </p>
-
-      <p className="mt-6 italic text-sm text-gray-500 dark:text-gray-300">
+      <br />
+      <p className="text-sm text-gray-500 dark:text-gray-300">
+        In the future, you may have the option to select the order in which you place words in each column.
+      </p>
+      <p className="mt-2 italic text-sm text-gray-500 dark:text-gray-300">
         This is an open source version of the word guessing game we all know and
         love -{' '}
         <a

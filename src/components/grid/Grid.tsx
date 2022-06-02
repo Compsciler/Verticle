@@ -45,7 +45,7 @@ export const Grid = ({
     width: `${solution.length * 60}px`,
   }
   const lineBreakStyle = {
-    width: '100%'
+    width: '25%'
   }
   return (
     <div style={styles}>
