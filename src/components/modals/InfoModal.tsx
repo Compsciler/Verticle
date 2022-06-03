@@ -21,7 +21,6 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
       </p>
 
       <div className="flex justify-center mb-1 mt-4">
-        {/* <CompletedCol solution="" guess="WEARY" col={1} /> */}
         <Grid
           solution="AMPLY"
           guesses={["WEARY", "PILLS", "VAGUE", "AMPLY"]}
@@ -58,7 +57,8 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
       </p>
       <br />
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        In the future, you may have the option to select the order in which you place words in each column.
+        In the future, you may have the option to select the order in which you place words in each column. 
+        Playing on PC is recommended.
       </p>
       <p className="mt-2 italic text-sm text-gray-500 dark:text-gray-300">
         This is an open source version of the word guessing game we all know and
