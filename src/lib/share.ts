@@ -83,7 +83,10 @@ export const generateEmojiGrid = (
     })
     .join('\n')
 
-    const emojiGrid = colEmojiGrid + '\n\n' + rowEmojiGrid
+    let emojiGrid = colEmojiGrid
+    if (rowEmojiGrid) {
+      emojiGrid += '\n\n' + rowEmojiGrid
+    }
     return emojiGrid
 }
 
