@@ -138,6 +138,7 @@ function App() {
         persist: true,
       })
     }
+    setCharStatuses(loaded.charStatuses)
     return loaded.guesses
   })
 
