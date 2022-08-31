@@ -127,13 +127,29 @@ export const getColGuessStatuses = (
 
   // handle all correct cases first
   let found_correct_letter = false
+  found_correct_letter = handleIfCorrectLetterAndReturnIsCorrectFound(
+    splitGuess[colIndex],
+    colIndex,
+    colIndex,
+    found_correct_letter,
+    splitSolution,
+    statuses,
+    solutionCharsTaken
+  )
+  
   splitGuess.forEach((letter, i) => {
-    if (letter === splitSolution[colIndex] && !found_correct_letter) {
-      statuses[i] = 'correct'
-      solutionCharsTaken[colIndex] = true
-      found_correct_letter = true
+    if (i === colIndex) {
       return
     }
+    found_correct_letter = handleIfCorrectLetterAndReturnIsCorrectFound(
+      letter,
+      i,
+      colIndex,
+      found_correct_letter,
+      splitSolution,
+      statuses,
+      solutionCharsTaken
+    )
   })
 
   splitGuess.forEach((letter, i) => {
@@ -161,4 +177,21 @@ export const getColGuessStatuses = (
   })
   
   return statuses
+}
+
+const handleIfCorrectLetterAndReturnIsCorrectFound = (
+  letter: string,
+  i: number,
+  colIndex: number,
+  found_correct_letter: boolean,
+  splitSolution: string[],
+  statuses: CharStatus[],
+  solutionCharsTaken: boolean[],
+): boolean => {
+  if (letter === splitSolution[colIndex] && !found_correct_letter) {
+    statuses[i] = 'correct'
+    solutionCharsTaken[colIndex] = true
+    return true
+  }
+  return found_correct_letter
 }
