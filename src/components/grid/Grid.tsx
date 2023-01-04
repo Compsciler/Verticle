@@ -16,8 +16,8 @@ type Props = {
   isStartOfRevealing: boolean
   setIsStartOfRevealing?: Dispatch<SetStateAction<boolean>>
   currentRowClassName: string
-  charStatuses?: {[key: string]: CharStatus}
-  setCharStatuses?: Dispatch<SetStateAction<{[key: string]: CharStatus}>>
+  charStatuses?: { [key: string]: CharStatus }
+  setCharStatuses?: Dispatch<SetStateAction<{ [key: string]: CharStatus }>>
 }
 
 export const Grid = ({
@@ -74,7 +74,7 @@ export const Grid = ({
         <CurrentCol
           guess={currentGuess}
           solution={solution}
-          className={currentRowClassName} 
+          className={currentRowClassName}
           isStartOfRevealing={isStartOfRevealing}
           setIsStartOfRevealing={setIsStartOfRevealing}
           col={guesses.length}
@@ -96,7 +96,7 @@ export const Grid = ({
           />
         </>
       )}
-      
+
       {/* Assumes that solution.length < MAX_CHALLENGES */}
       {empties.slice(0, solution.length - MAX_CHALLENGES).map((_, i) => (
         <EmptyCol solution={solution} key={i} />

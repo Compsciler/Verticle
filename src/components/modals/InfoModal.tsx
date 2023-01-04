@@ -11,11 +11,11 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
     <BaseModal title="How to play" isOpen={isOpen} handleClose={handleClose} isWide={true}>
       <p className="text-sm text-gray-500 dark:text-gray-300">
         Vertically guess the word in 6 tries. After each guess, the color of the tiles will
-        change to show how close your guess was to 
+        change to show how close your guess was to
         the letter <strong>in that column position</strong> for the word.
       </p>
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        Imagine the solution word being placed in the bottom row and 
+        Imagine the solution word being placed in the bottom row and
         the color of the letters in the grid apply to the word below.
         (If you reach the 6th guess, it will be spelled horizontally and will be colored normally.)
       </p>
@@ -57,7 +57,7 @@ export const InfoModal = ({ isOpen, handleClose }: Props) => {
       </p>
       <br />
       <p className="text-sm text-gray-500 dark:text-gray-300">
-        In the future, you may have the option to select the order in which you place words in each column. 
+        In the future, you may have the option to select the order in which you place words in each column.
         Playing on PC is recommended.
       </p>
       <p className="mt-2 italic text-sm text-gray-500 dark:text-gray-300">
