@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = 'https://verticle.herokuapp.com/api/scores'
+const baseUrl = 'https://wordlebackend.herokuapp.com/verticle/api/scores'
 
 /*
 const getAll = () => {
